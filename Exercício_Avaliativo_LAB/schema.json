@@ -1,0 +1,15 @@
+{
+  "nome": "string",
+  "nota": "number",
+  "corridas": [
+    {
+      "nota": "number",
+      "distancia": "number",
+      "valor": "number",
+      "passageiro": {
+        "nome": "string",
+        "documento": "string"
+      }
+    }
+  ]
+}
