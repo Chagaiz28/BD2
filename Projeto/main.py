@@ -1,7 +1,8 @@
 from database import Database
-from librarydatabase import LibraryDatabase
+from author import Author
+from book import Book
 
-def main_menu(library_db):
+def main_menu(db):
     while True:
         print("1. Create Author")
         print("2. Create Book")
@@ -20,42 +21,51 @@ def main_menu(library_db):
         if choice == '1':
             author_id = input("Enter author ID: ")
             name = input("Enter author name: ")
-            library_db.create_author(author_id, name)
+            author = Author(db, author_id, name)
+            author.create()
         elif choice == '2':
             book_id = input("Enter book ID: ")
             title = input("Enter book title: ")
-            library_db.create_book(book_id, title)
+            book = Book(db, book_id, title)
+            book.create()
         elif choice == '3':
             author_id = input("Enter author ID: ")
             book_id = input("Enter book ID: ")
-            library_db.add_author_to_book(author_id, book_id)
+            author = Author(db, author_id, '')
+            book = Book(db, book_id, '')
+            book.add_author(author)
         elif choice == '4':
             author_id = input("Enter author ID: ")
             new_name = input("Enter new author name: ")
-            library_db.update_author_name(author_id, new_name)
+            author = Author(db, author_id, new_name)
+            author.update_name()
         elif choice == '5':
             book_id = input("Enter book ID: ")
             new_title = input("Enter new book title: ")
-            library_db.update_book_title(book_id, new_title)
+            book = Book(db, book_id, new_title)
+            book.update_title()
         elif choice == '6':
-            authors = library_db.get_authors()
+            authors = Author.get_all(db)
             for author in authors:
                 print(f"ID: {author['id']}, Name: {author['name']}")
         elif choice == '7':
-            books = library_db.get_books()
+            books = Book.get_all(db)
             for book in books:
                 print(f"ID: {book['id']}, Title: {book['title']}")
         elif choice == '8':
             author_id = input("Enter author ID: ")
-            books = library_db.get_author_books(author_id)
+            author = Author(db, author_id, '')
+            books = author.get_books()
             for book in books:
                 print(f"ID: {book['id']}, Title: {book['title']}")
         elif choice == '9':
             author_id = input("Enter author ID to delete: ")
-            library_db.delete_author(author_id)
+            author = Author(db, author_id, '')
+            author.delete()
         elif choice == '10':
             book_id = input("Enter book ID to delete: ")
-            library_db.delete_book(book_id)
+            book = Book(db, book_id, '')
+            book.delete()
         elif choice == '0':
             break
         else:
@@ -64,6 +74,5 @@ def main_menu(library_db):
 if __name__ == "__main__":
     db = Database("neo4j+s://efaa3965.databases.neo4j.io", "neo4j", "Mb0EOi68tISoaWvBPRIhW-peX7fdr30OiOyU51hly5o")
     db.drop_all()
-    library_db = LibraryDatabase(db)
-    main_menu(library_db)
+    main_menu(db)
     db.close()
