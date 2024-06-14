@@ -38,12 +38,12 @@ def main_menu(db):
             author_id = input("Enter author ID: ")
             new_name = input("Enter new author name: ")
             author = Author(db, author_id, new_name)
-            author.update_name()
+            author.update_name(new_name)
         elif choice == '5':
             book_id = input("Enter book ID: ")
             new_title = input("Enter new book title: ")
             book = Book(db, book_id, new_title)
-            book.update_title()
+            book.update_title(new_title)
         elif choice == '6':
             authors = Author.get_all(db)
             for author in authors:
@@ -73,6 +73,5 @@ def main_menu(db):
 
 if __name__ == "__main__":
     db = Database("neo4j+s://efaa3965.databases.neo4j.io", "neo4j", "Mb0EOi68tISoaWvBPRIhW-peX7fdr30OiOyU51hly5o")
-    db.drop_all()
     main_menu(db)
     db.close()
